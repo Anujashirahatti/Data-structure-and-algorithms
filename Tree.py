@@ -1,54 +1,75 @@
-class TreeNode:
-    def _init_(self, key):
-        self.val = key
-        self.left = None
-        self.right = None
 
-class BST:
-    def _init_(self):
-        self.root = None
+class Node:
+    def __init__(self,data):
+        self.data=data
+        self.left=None
+        self.right=None
+        
+root=Node(10)
+root.left=Node(20)
+root.right=Node(30)
+root.left.left=Node(40)
+root.left.right=Node(50)
+root.right.right=Node("anu")
 
-    def insert(self, root, key):
-        if root is None:
-            return TreeNode(key)
-        else:
-            if root.val < key:
-                root.right = self.insert(root.right, key)
-            else:
-                root.left = self.insert(root.left, key)
-        return root
+def preOrder(root):
+    if root==None:
+        return
+    else:
+        print(root.data)
+        preOrder(root.left)
+        preOrder(root.right)
+        
+def inOrder(root):
+    if root==None:
+        return
+    else:
+        inOrder(root.left)
+        print(root.data)
+        inOrder(root.right)
+        
+def postOrder(root):
+    if root==None:
+        return
+    else:
+        postOrder(root.left)
+        postOrder(root.right)
+        print(root.data)
 
-    def inorder_traversal(self, root):
-        if root:
-            self.inorder_traversal(root.left)
-            print(root.val, end=" ")
-            self.inorder_traversal(root.right)
+def height(root):
+    if root==None:
+        return -1
+    elif root!=None and root.left==None and root.right==None:
+        return 0
+    else:
+        return max(height(root.left),height(root.right))+1#root
+    
+def Counting(root):
+    if root==None:
+        return 0
+    elif root!=None and root==None and root.right==None:
+        return 1
+    else:
+        le=Counting(root.left)        
+        rp=Counting(root.right)
+        return le+rp+1
+    
+def countingleaf(root):
+    count=0
+    if root==None:
+        return count
+    elif root!=None and root.left==None and root.right==None:
+        count+=1
+        return count
+    else:
+        lp=countingleaf(root.left) 
+        rp=countingleaf(root.right)
+        return lp+rp
+        
+preOrder(root)
+inOrder(root)
+postOrder(root)
+        
+        
+    
 
-    def search(self, root, key):
-        if root is None or root.val == key:
-            return root
-        if root.val < key:
-            return self.search(root.right, key)
-        return self.search(root.left, key)
-
-# Example usage:
-bst = BST()
-bst.root = bst.insert(bst.root, 50)
-bst.insert(bst.root, 30)
-bst.insert(bst.root, 20)
-bst.insert(bst.root, 40)
-bst.insert(bst.root, 70)
-bst.insert(bst.root, 60)
-bst.insert(bst.root, 80)
-
-print("Inorder traversal of the BST:")
-bst.inorder_traversal(bst.root)
-print()
-
-# Search for a key
-key = 60
-result = bst.search(bst.root, key)
-if result:
-    print(f"{key} found in the BST")
-else:
-    print(f"{key} not found in the BST")
